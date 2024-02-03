@@ -1,14 +1,16 @@
 import React, { useRef, useState } from 'react'
 import Header from './Header'
 import { checkValidateData } from '../utils/validate';
-import {  createUserWithEmailAndPassword ,signInWithEmailAndPassword} from "firebase/auth";
+import {  createUserWithEmailAndPassword ,signInWithEmailAndPassword,updateProfile} from "firebase/auth";
 import {auth} from "../utils/firebase";
+import { useNavigate } from 'react-router-dom';
 
 const Login = () => {
     const [isSignInForm, setIsSignInForm] = useState(true);
     const [errorMessage, setErrorMessage] = useState();
+    const navigate =useNavigate()
 
-
+    const name =useRef(null);
     const email = useRef(null)
     const password = useRef(null)
     const handleButtonClick = () => {
@@ -23,7 +25,20 @@ createUserWithEmailAndPassword(auth, email.current.value, password.current.value
   .then((userCredential) => {
     // Signed up 
     const user = userCredential.user;
+    updateProfile(user, {
+        displayName: name.current.value, photoURL:"https://avatars.githubusercontent.com/u/96768418?v=4",
+      }).then(() => {
+        // Profile updated!
+        // ...
+        navigate("/browse")
+      }).catch((error) => {
+        // An error occurred
+        // ...
+       setErrorMessage(error.message)
+      });
+
     console.log(user);
+  
     // ...
   })
   .catch((error) => {
@@ -41,6 +56,7 @@ setErrorMessage(errorCode + "--"+errorMessage)
     // Signed in 
     const user = userCredential.user;
     console.log(user);
+    navigate("/browse")
     // ...
   })
   .catch((error) => {
@@ -69,7 +85,7 @@ setErrorMessage(errorCode + "--"+errorMessage)
             <form onSubmit={(e) => e.preventDefault()} className='w-4/12 bg-black/80 backdrop-opacity-15 absolute p-12 my-36 mx-auto right-0 left-0 text-white '>
                 <h1 className='font-bold text-3xl py-4'>{isSignInForm ? "Sign In" : "Sign Up"}</h1>
                 {!isSignInForm && (
-                    <input type='First name' placeholder='First Name' className='my-4 p-4 w-full bg-slate-500 rounded-md' />
+                    <input ref={name} type='First name' placeholder='First Name' className='my-4 p-4 w-full bg-slate-500 rounded-md' />
 
                 )}
 
