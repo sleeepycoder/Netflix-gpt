@@ -6,11 +6,11 @@ create react app
 
 Before login
 
----login /sign up page
+ -login /sign up page
   -redirect to main page
 
  - Browser
-    -Header
+  -Header
     -Logo
     -MAin Movie
         -Tailor in background

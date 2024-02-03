@@ -1,12 +1,24 @@
+// import { createRoot } from "react-dom/client";
+// import {
+//   createBrowserRouter,
+//   RouterProvider,
+//   Route,
+//   Link,
+// } from "react-router-dom";
+import Body from "./components/Body";
 
-import './App.css';
 
 function App() {
   return (
     <div >
- <h1 className="text-xl font-bold "> App</h1>
+<Body/>
     </div>
   );
 }
+
+
+
+
+
 
 export default App;
