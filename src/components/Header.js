@@ -7,10 +7,14 @@ import { onAuthStateChanged } from "firebase/auth";
 import { useDispatch} from 'react-redux';
 import {addUser, removeUser}  from '../utils/userSlice'
 import { LOGO_URL } from '../utils/constants';
+import { toggleGptSearchView } from '../utils/gptSlice';
+import { SUPPORTED_LANGUAGES } from '../utils/constants';
 const Header = () => {
 const navigate =useNavigate();
 const dispatch =useDispatch();
 const user =useSelector(store => store.user);
+// console.log(user);
+
 
   const habdleSignOut =()=>{
     signOut(auth).then(() => {
@@ -44,7 +48,10 @@ const user =useSelector(store => store.user);
     return () => unsubscribe();
     },[])
     
+const handleGptSearchToggle =() =>{
+dispatch(toggleGptSearchView());
 
+};
 
 
 
@@ -57,12 +64,25 @@ const user =useSelector(store => store.user);
   <img className='w-44' src={LOGO_URL}
     alt='logo'
   />
-<div className='flex p-2 gap-3 h-30 w-40 cursor-pointer'>
 
+<div className='flex p-2  cursor-pointer'>
+<select>
+{SUPPORTED_LANGUAGES.map((lang ,index)=>(
+<option key={lang.identifier} value={lang.identifier}
+className='p-2 bg-gray-500'
+>{lang.name}</option>
+
+))}
+</select>
+
+
+<button className='text-white mx-4 px-4 bg-purple-800 rounded-lg mx-2'
+onClick={handleGptSearchToggle}
+>Gpt Search</button>
   {/* <img className='rounded-lg h-16 w-12' src={user.photoURL} alt='userimage'/> */}
-<button className='text-white bg-slate-800 p-2 rounded-lg'
+<button className='text-white bg-slate-800 px-2 rounded-lg'
 onClick={habdleSignOut}
->Sign Out</button>
+>{user ? "Signout" :"SignIn"}</button>
 
 </div>
 
